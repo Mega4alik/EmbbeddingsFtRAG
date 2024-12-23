@@ -63,7 +63,7 @@ def test():
 
 # =================================================
 
-train_mode = 1 #1-train, 2-evaluate
+train_mode = 1 #1-train, 2-evaluate, 3-just ini for visualize
 model_type = 1 #1-jinaai, 2-gte-Qwen2
 training_type = 2 #1-TripletMarginLoss, 2-CosineEmbeddingLoss
 
@@ -77,14 +77,14 @@ if model_type==1 and training_type==1: siamese_model = JinaModel(model_name=mode
 elif model_type==1 and training_type==2: siamese_model = JinaModel2(model_name=model_name)
 else: siamese_model = SiameseModel(model_name=model_name)
 
-if train_mode==2: #=== Evaluate trained model ===
+if train_mode in [2, 3]: #=== Evaluate trained model ===
     modeling.device = torch.device("cuda:0")
     #load trained model weights
-    state_dict = load_file("./model_temp/checkpoint-6200/model.safetensors")
+    state_dict = load_file("./model_temp/checkpoint-2760/model.safetensors")
     siamese_model.load_state_dict(state_dict)
     siamese_model.cuda()
     siamese_model.eval()
-    test()
+    if train_mode==2: test()
 elif train_mode==1: #=== Train ===
     # Create the dataset
     chunks, questions = prepare_dataset()

@@ -113,7 +113,7 @@ class ChunkQuestionTargetDataset(Dataset):
             for positive in positive_questions[1:]:
                 self.samples.append((anchor, positive, 1))
 
-            for negative_question in self.get_random_samples(idx, questions, 5):
+            for negative_question in self.get_random_samples(idx, questions, 15):
                 self.samples.append((anchor, negative_question, -1))
 
             for negative_chunk in self.get_random_samples(idx, chunks, 5):

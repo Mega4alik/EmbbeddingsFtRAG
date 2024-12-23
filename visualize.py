@@ -84,13 +84,13 @@ if __name__ == "__main__":
     chunks, questions = prepare_dataset()
     assert len(chunks) == len(questions)
     data, labels, color_id = [], [], 0
-    for i in range(10): #len(chunks)
+    for i in range(6): #len(chunks)
         data.append( get_embedding(chunks[i]) )
         labels.append(f"{color_id}P")
         for question in questions[i]:
             data.append( get_embedding(question) )
-            labels.append(f"{color_id}Q")
+            labels.append(f"{color_id}")
         color_id+=1
 
-    visualize_vectors_with_pca(data, labels=labels, n_components=3) #=2/3
+    visualize_vectors_with_pca(data, labels=labels, n_components=2) #=2/3
     
