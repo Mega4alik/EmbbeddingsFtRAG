@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt    
+from sklearn.manifold import TSNE
 from sklearn.decomposition import PCA
 matplotlib.use('TkAgg')  # Use the TkAgg backend for interactive plotting
 from train import prepare_dataset, get_embedding
@@ -78,6 +79,28 @@ def visualize_vectors_with_pca(data, labels=None, n_components=2):
     plt.show()
 
 
+def visualize_vectors_with_tsne(data, names):
+    embeddings = np.array(data)
+    # Apply t-SNE
+    tsne = TSNE(n_components=2, random_state=42, perplexity=30, n_iter=1000)
+    X_tsne = tsne.fit_transform(embeddings)
+
+    # Create a scatter plot
+    plt.figure(figsize=(12, 8))
+    plt.scatter(X_tsne[:, 0], X_tsne[:, 1], s=50, alpha=0.7)
+
+    # Annotate points with names
+    for i, name in enumerate(names):
+        plt.text(X_tsne[i, 0], X_tsne[i, 1], name, fontsize=9, alpha=0.8)
+
+    plt.title("t-SNE Visualization of Embeddings with Names")
+    plt.xlabel("t-SNE Dimension 1")
+    plt.ylabel("t-SNE Dimension 2")
+    plt.grid(True)
+    plt.show()
+
+
+
 if __name__ == "__main__":
     #data = np.random.rand(100, 5)    
     #labels = np.random.randint(0, 3, size=100)
@@ -92,5 +115,6 @@ if __name__ == "__main__":
             labels.append(f"{color_id}")
         color_id+=1
 
-    visualize_vectors_with_pca(data, labels=labels, n_components=2) #=2/3
+    #visualize_vectors_with_pca(data, labels=labels, n_components=2) #=2/3
+    visualize_vectors_with_tsne(data, labels)
     

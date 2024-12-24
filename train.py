@@ -55,7 +55,7 @@ def test():
         qe, a = get_embedding(question), []
         for j in range(n): a.append((j, cosine_similarity(qe, chunks_emb[j])))
         a = sorted(a, key=lambda x: x[1], reverse=True)
-        top = [x[0] for x in a[:10]] #top5
+        top = [x[0] for x in a[:5]] #top3,5,10
         if idx in top: yes_count+=1        
         print(idx, "--", top, ("YES" if idx in top else "NO") )        
     print(f"YES: {yes_count}, NO: {n-yes_count}")
@@ -65,7 +65,7 @@ def test():
 
 train_mode = 1 #1-train, 2-evaluate, 3-just ini for visualize
 model_type = 1 #1-jinaai, 2-gte-Qwen2
-training_type = 2 #1-TripletMarginLoss, 2-CosineEmbeddingLoss
+training_type = 1 #1-TripletMarginLoss, 2-CosineEmbeddingLoss
 
 # =================================================
 
@@ -80,7 +80,7 @@ else: siamese_model = SiameseModel(model_name=model_name)
 if train_mode in [2, 3]: #=== Evaluate trained model ===
     modeling.device = torch.device("cuda:0")
     #load trained model weights
-    state_dict = load_file("./model_temp/checkpoint-2760/model.safetensors")
+    state_dict = load_file("./models/domain_emb_jina1/checkpoint-3500/model.safetensors") #path to your checkpoint
     siamese_model.load_state_dict(state_dict)
     siamese_model.cuda()
     siamese_model.eval()
